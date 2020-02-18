@@ -100,7 +100,22 @@ library
                , witherable
 
   exposed-modules: Frontend
+                 , Frontend.Crypto.Browser
+                 , Frontend.Crypto.Class
+                 , Frontend.Crypto.Ed25519
+                 , Frontend.Foundation
                  , Frontend.ReplGhcjs
+                 , Frontend.Storage
+                 , Frontend.Storage.Class
+                 , Frontend.Storage.Browser
+                 , Frontend.Store
+                 , Frontend.Store.MigrationUtils
+                 , Frontend.Store.TH
+                 , Frontend.Store.V0
+                 , Frontend.Store.V0.Wallet
+                 , Frontend.Store.V1
+                 , Reflex.Extended
+                 , Reflex.Network.Extended
                  , Pact.Server.ApiV1Client
 
   ghc-options: -Wall

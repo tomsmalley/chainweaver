@@ -16,7 +16,9 @@ import           Obelisk.Generated.Static
 
 import           Common.Api
 import           Common.Route
+import           Frontend.Crypto.Browser
 import           Frontend.ReplGhcjs
+import           Frontend.Storage
 
 frontend :: Frontend (R FrontendRoute)
 frontend = Frontend
@@ -40,7 +42,7 @@ frontend = Frontend
       pure ()
 
   , _frontend_body = prerender_ loaderMarkup $ do
-    mapRoutedT (flip runTransactionLoggerT logTransactionStdout) $ app
+    mapRoutedT (flip runTransactionLoggerT logTransactionStdout . runBrowserStorageT . runBrowserCryptoT) app
   }
 
 tshow :: Show a => a -> Text

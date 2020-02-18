@@ -20,13 +20,18 @@ module Frontend.ReplGhcjs where
 
 import Control.Lens
 import Control.Monad.State.Strict
+import Data.Aeson (FromJSON, ToJSON)
 import Data.Text (Text)
 import Language.Javascript.JSaddle (liftJSM)
 import Obelisk.Route (R)
 import Obelisk.Route.Frontend
+import Reflex
 import Reflex.Dom.Core
 
 import Common.Route
+import Frontend.Crypto.Class
+import Frontend.Storage
+import qualified Frontend.Store as Store
 
 import qualified Servant.Client.JSaddle            as S
 
@@ -41,11 +46,14 @@ import qualified Text.URI.QQ as URI
 import Text.URI.Lens (uriPath)
 
 app
-  :: forall t m.
+  :: forall key t m.
      ( MonadWidget t m
+     , HasStorage (Performable m)
+     , HasCrypto key (Performable m)
+     , FromJSON key, ToJSON key
      )
   => RoutedT t (R FrontendRoute) m ()
-app = do
+app = Store.versionedUi (Store.versioner @key) $ do
   let
     args :: [Text]
     args = ["chainweb", "0.0", "testnet04", "chain", "8", "pact"]
