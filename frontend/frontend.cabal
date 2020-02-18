@@ -104,7 +104,6 @@ library
                  , Frontend.Crypto.Class
                  , Frontend.Crypto.Ed25519
                  , Frontend.Foundation
-                 , Frontend.ReplGhcjs
                  , Frontend.Storage
                  , Frontend.Storage.Class
                  , Frontend.Storage.Browser
