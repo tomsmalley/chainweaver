@@ -108,7 +108,6 @@ library
                  , Frontend.Storage.Class
                  , Frontend.Storage.Browser
                  , Frontend.Store
-                 , Frontend.Store.MigrationUtils
                  , Frontend.Store.TH
                  , Frontend.Store.V0
                  , Frontend.Store.V0.Wallet

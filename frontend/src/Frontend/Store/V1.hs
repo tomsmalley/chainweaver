@@ -24,7 +24,6 @@ import Common.GistStore (GistMeta)
 import Frontend.Store.TH
 import qualified Frontend.Store.V0 as V0
 import qualified Frontend.Store.V0.Wallet as V0
-import Frontend.Store.MigrationUtils
 import Frontend.Crypto.Class
 
 -- WARNING: Upstream deps. Check this when we bump pact and obelisk!
@@ -68,18 +67,7 @@ upgradeFromV0 v0 = do
   (newKeysList, newAccountStorage) <- foldMapM splitOldKey oldKeysList
   let newKeys = IntMap.fromList newKeysList
   pure $ DMap.fromList . catMaybes $
-    [ copyKeyDSum V0.StoreNetwork_PublicMeta StoreFrontend_Network_PublicMeta v0
-    , copyKeyDSum V0.StoreNetwork_SelectedNetwork StoreFrontend_Network_SelectedNetwork v0
-    -- Technically these are session only and shouldn't be here given the backup restore only works on
-    -- local storage, but desktop ignores the session vs local distinction so migrating them probably
-    -- does some good and certainly doesn't hurt.
-    -- Also, this is currently being very lazy not leaning on the Universe instance of OAuthProvider
-    , copyKeyDSum V0.StoreOAuth_Tokens StoreFrontend_OAuth_Tokens v0
-    , copyKeyDSum (V0.StoreOAuth_State OAuthProvider_GitHub) (StoreFrontend_OAuth_State OAuthProvider_GitHub) v0
-
-    , copyKeyDSum V0.StoreModuleExplorer_SessionFile StoreFrontend_ModuleExplorer_SessionFile v0
-
-    , Just (StoreFrontend_Wallet_Keys :=> Identity newKeys)
+    [ Just (StoreFrontend_Wallet_Keys :=> Identity newKeys)
     , Just (StoreFrontend_Wallet_Accounts :=> Identity newAccountStorage)
     , newNetworks
     ]
