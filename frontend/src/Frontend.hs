@@ -38,7 +38,7 @@ app :: forall key t m.
      )
   => RoutedT t (R FrontendRoute) m ()
 app = do
-  _ <- _storageVersioner_upgrade $ Store.versioner @key
+  _ <- Store.upgrade @key
 
   let env = S.mkClientEnv $ S.BaseUrl S.Https "eu1.testnet.chainweb.com" 80 "/chainweb/0.0/testnet04/chain/8/pact"
       cmd = fmap T.decodeUtf8 $ Pact.Command "" [] $ Pact.hash ""

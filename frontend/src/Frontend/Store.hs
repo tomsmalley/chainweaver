@@ -1,9 +1,7 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
 module Frontend.Store
-  ( module V1
-  , versioner
-  , versionedUi
+  ( upgrade
   ) where
 
 import Frontend.Storage.Class
@@ -17,55 +15,18 @@ import qualified Frontend.Store.V1 as V1
 import Frontend.Store.V1 as Latest
 import Frontend.Crypto.Class
 
--- Doesn't execute the widget until we've checked the current version and upgraded if necessary
--- TODO: This should have a better home.
-versionedUi
-  :: forall t m key
-   . ( DomBuilder t m, PostBuild t m, MonadHold t m, PerformEvent t m
-     )
-  => StorageVersioner (Performable m) key
-  -> m ()
-  -> m ()
-versionedUi v widget = do
-  pbE <- getPostBuild
-  migratedE <- performEvent $ performUpdate <$ pbE
-  widgetHold_ blank $ widget <$ migratedE
-  where
-    performUpdate = do
-      _ <- _storageVersioner_upgrade v
-      pure ()
+prefix :: StoreKeyMetaPrefix
+prefix = StoreKeyMetaPrefix "StoreFrontend_Meta"
 
-versioner
-  :: forall key m.
+upgrade :: forall key m.
      ( ToJSON key
      , FromJSON key
      , Monad m
      , HasStorage m
      , HasCrypto key m
      )
-  => StorageVersioner m (Latest.StoreFrontend key)
-versioner = StorageVersioner
-  { _storageVersioner_metaPrefix = prefix
-  , _storageVersioner_backupVersion = backup
-  , _storageVersioner_upgrade = upgrade
-  }
-  where
-    prefix :: StoreKeyMetaPrefix
-    prefix = StoreKeyMetaPrefix "StoreFrontend_Meta"
-    backup :: m (Maybe VersioningError)
-    backup = do
-      ver <- getCurrentVersion prefix
-      case ver of
-        0 -> do
-          _ok <- backupLocalStorage prefix (Proxy @(V0.StoreFrontend key)) 0
-          pure Nothing
-        1 -> do
-          _ok <- backupLocalStorage prefix (Proxy @(V1.StoreFrontend key)) 1
-          pure Nothing
-        v -> pure $ Just $ VersioningError_UnknownVersion v
-
-    upgrade :: m (Maybe VersioningError)
-    upgrade = do
+  => m (Maybe VersioningError)
+upgrade = do
       ver <- getCurrentVersion prefix
       case ver of
         0 -> do

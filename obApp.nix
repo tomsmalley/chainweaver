@@ -96,6 +96,7 @@ in
         in lib.genAttrs hsNames (name: null);
       ghcjs-overlay = self: super: {
         # I'm not sure if these hang or just take a long time
+        frontend = haskellLib.dontHaddock super.frontend;
         hourglass = haskellLib.dontCheck super.hourglass;
         x509 = haskellLib.dontCheck super.x509;
         tls = haskellLib.dontCheck super.tls;
