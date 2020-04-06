@@ -13,26 +13,19 @@ module Frontend.Storage.Class
   ) where
 
 import Control.Monad.Reader
-import Data.Aeson (FromJSON, ToJSON)
-import Data.Constraint.Extras (Has, Has', has)
+import Data.Aeson (ToJSON)
+import Data.Constraint.Extras (Has')
 import Data.Constraint.Forall (ForallF)
-import Data.Dependent.Map (DMap, DSum((:=>)))
+import Data.Dependent.Map (DMap, empty)
 import Data.Dependent.Sum.Orphans ()
-import Data.Functor.Identity (Identity(Identity))
-import Data.GADT.Compare (GCompare)
-import Data.GADT.Show (GShow,gshow)
-import Data.Proxy (Proxy)
-import Data.Some (Some(Some))
+import Data.Functor.Identity (Identity)
 import Data.Text (Text)
-import Data.Universe.Some (UniverseSome, universeSome)
 import Frontend.Foundation
 import Numeric.Natural (Natural)
 import Obelisk.Route.Frontend
 
 import qualified Data.Aeson as Aeson
 import qualified Data.ByteString.Lazy as BL
-import qualified Data.Dependent.Map as DMap
-import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 
 {-- Notes for migration
@@ -63,14 +56,6 @@ newtype StoreKeyMetaPrefix = StoreKeyMetaPrefix Text
 encodeText :: Aeson.ToJSON a => a -> Text
 encodeText = T.decodeUtf8 . BL.toStrict . Aeson.encode
 
-decodeText :: Aeson.FromJSON a => Text -> Maybe a
-decodeText = Aeson.decodeStrict . T.encodeUtf8
-
-getItemStorage
-  :: (HasStorage m, GShow k, Aeson.FromJSON a, Functor m)
-  => StoreType -> k a -> m (Maybe a)
-getItemStorage st k = (decodeText =<<) <$> getItemStorage' st (keyToText k)
-
 backupKeyPrefixText :: StoreKeyMetaPrefix -> Natural -> Text
 backupKeyPrefixText (StoreKeyMetaPrefix p) ver = (p <> "_Backups_V" <> tshow ver)
 
@@ -93,41 +78,15 @@ backupLocalStorage
   :: forall storeKeys m
   . ( HasStorage m
     , Monad m
-    , GCompare storeKeys
-    , UniverseSome storeKeys
     , ForallF ToJSON storeKeys
     , Has' ToJSON storeKeys Identity
-    , Has FromJSON storeKeys
-    , GShow storeKeys
     )
   => StoreKeyMetaPrefix
-  -> Proxy storeKeys
   -> Natural  -- This version is the expectation set by the caller who has already chosen the key type
   -> m (Maybe (DMap storeKeys Identity))
-backupLocalStorage p _ expectedVer = do
-      dump <- dumpLocalStorage @storeKeys
-      setBackup p expectedVer 0 dump
---      setLatestBackupSequence p expectedVer 0
-      pure (Just dump)
-
-dumpLocalStorage
-  :: forall storeKeys m
-  . ( HasStorage m
-    , Monad m
-    , GCompare storeKeys
-    , UniverseSome storeKeys
-    , Has FromJSON storeKeys
-    , GShow storeKeys
-    )
-  => m (DMap storeKeys Identity)
-dumpLocalStorage = fmap (DMap.fromList . catMaybes)
-  . traverse (\(Some k) -> has @FromJSON k $
-    (fmap (\v -> k :=> Identity v)) <$> getItemStorage StoreType_Local k
-  )
-  $ universeSome @storeKeys
-
-keyToText :: (GShow k) => k a -> Text
-keyToText = T.pack . gshow
+backupLocalStorage p expectedVer = do
+      setBackup p expectedVer 0 (empty :: DMap storeKeys Identity)
+      pure Nothing
 
 -- | Get access to browser's local storage.
 localStorage :: StoreType

@@ -25,7 +25,6 @@ import Pact.Server.ApiV1Client as Pact
 import qualified Pact.Types.Command as Pact
 import qualified Pact.Types.Hash as Pact
 
-import Data.Proxy (Proxy(Proxy))
 import qualified Frontend.Store.V0 as V0 (StoreFrontend)
 
 import Frontend.Crypto.Ed25519
@@ -37,7 +36,7 @@ app :: forall t m.
      )
   => RoutedT t (R FrontendRoute) m ()
 app = do
-  _ <- backupLocalStorage (StoreKeyMetaPrefix "StoreFrontend_Meta") (Proxy @(V0.StoreFrontend PrivateKey)) 0
+  _ <- backupLocalStorage @(V0.StoreFrontend PrivateKey) (StoreKeyMetaPrefix "StoreFrontend_Meta") 0
 
   let env = S.mkClientEnv $ S.BaseUrl S.Https "eu1.testnet.chainweb.com" 80 "/chainweb/0.0/testnet04/chain/8/pact"
       cmd = fmap T.decodeUtf8 $ Pact.Command "" [] $ Pact.hash ""
