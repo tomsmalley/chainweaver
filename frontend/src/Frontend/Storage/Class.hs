@@ -10,7 +10,6 @@ module Frontend.Storage.Class
   , StoreType (..)
   , HasStorage(..)
   , StoreKeyMetaPrefix(..)
-  , VersioningError
   ) where
 
 import Control.Monad.Reader
@@ -72,38 +71,11 @@ getItemStorage
   => StoreType -> k a -> m (Maybe a)
 getItemStorage st k = (decodeText =<<) <$> getItemStorage' st (keyToText k)
 
-currentVersionKeyText :: StoreKeyMetaPrefix -> Text
-currentVersionKeyText (StoreKeyMetaPrefix p) = (p <> "_Version")
-
 backupKeyPrefixText :: StoreKeyMetaPrefix -> Natural -> Text
 backupKeyPrefixText (StoreKeyMetaPrefix p) ver = (p <> "_Backups_V" <> tshow ver)
 
-latestBackupSequenceKeyText :: StoreKeyMetaPrefix -> Natural -> Text
-latestBackupSequenceKeyText p ver = (backupKeyPrefixText p ver) <> "_Latest"
-
 backupKeyText :: StoreKeyMetaPrefix -> Natural -> Natural -> Text
 backupKeyText p ver seqNo = (backupKeyPrefixText p ver) <> "_" <> tshow seqNo
-
-getCurrentVersion
-  :: (HasStorage m, Functor m)
-  => StoreKeyMetaPrefix
-  -> m Natural
-getCurrentVersion p = fromMaybe 0 . (decodeText =<<) <$> getItemStorage' localStorage (currentVersionKeyText p)
-
-getLatestBackupSequence
-  :: (HasStorage m, Functor m)
-  => StoreKeyMetaPrefix
-  -> Natural
-  -> m (Maybe Natural)
-getLatestBackupSequence p ver = (decodeText =<<) <$> getItemStorage' localStorage (latestBackupSequenceKeyText p ver)
-
-setLatestBackupSequence
-  :: HasStorage m
-  => StoreKeyMetaPrefix
-  -> Natural
-  -> Natural
-  -> m ()
-setLatestBackupSequence p ver = setItemStorage' localStorage (latestBackupSequenceKeyText p ver) . encodeText
 
 setBackup
   :: ( HasStorage m
@@ -133,14 +105,9 @@ backupLocalStorage
   -> Natural  -- This version is the expectation set by the caller who has already chosen the key type
   -> m (Maybe (DMap storeKeys Identity))
 backupLocalStorage p _ expectedVer = do
-  actualVer <- getCurrentVersion p
-  if actualVer /= expectedVer
-    then pure Nothing
-    else do
       dump <- dumpLocalStorage @storeKeys
-      thisSeqNo <- maybe 0 (+1) <$> getLatestBackupSequence p expectedVer
-      setBackup p expectedVer thisSeqNo dump
-      setLatestBackupSequence p expectedVer thisSeqNo
+      setBackup p expectedVer 0 dump
+--      setLatestBackupSequence p expectedVer 0
       pure (Just dump)
 
 dumpLocalStorage
@@ -161,8 +128,6 @@ dumpLocalStorage = fmap (DMap.fromList . catMaybes)
 
 keyToText :: (GShow k) => k a -> Text
 keyToText = T.pack . gshow
-
-type VersioningError = ()
 
 -- | Get access to browser's local storage.
 localStorage :: StoreType
