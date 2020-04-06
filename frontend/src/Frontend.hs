@@ -15,7 +15,6 @@ import           Common.Route
 import           Frontend.Crypto.Browser
 import           Frontend.Storage
 
-import Data.Aeson (FromJSON, ToJSON)
 import Language.Javascript.JSaddle (liftJSM)
 import Obelisk.Route (R)
 
@@ -29,15 +28,17 @@ import Pact.Server.ApiV1Client as Pact
 import qualified Pact.Types.Command as Pact
 import qualified Pact.Types.Hash as Pact
 
-app :: forall key t m.
+import Frontend.Crypto.Ed25519
+    ( PrivateKey )
+
+app :: forall t m.
      ( MonadWidget t m
      , HasStorage m
-     , HasCrypto key m
-     , FromJSON key, ToJSON key
+     , HasCrypto PrivateKey m
      )
   => RoutedT t (R FrontendRoute) m ()
 app = do
-  _ <- Store.upgrade @key
+  _ <- Store.upgrade @PrivateKey
 
   let env = S.mkClientEnv $ S.BaseUrl S.Https "eu1.testnet.chainweb.com" 80 "/chainweb/0.0/testnet04/chain/8/pact"
       cmd = fmap T.decodeUtf8 $ Pact.Command "" [] $ Pact.hash ""

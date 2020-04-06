@@ -3,7 +3,7 @@
 {-# LANGUAGE DefaultSignatures #-}
 {-# LANGUAGE UndecidableInstances #-}
 
-module Frontend.Crypto.Browser where
+module Frontend.Crypto.Browser (runBrowserCryptoT) where
 
 import Control.Monad.IO.Class (MonadIO)
 import Control.Monad.Primitive (PrimMonad (PrimState, primitive))
