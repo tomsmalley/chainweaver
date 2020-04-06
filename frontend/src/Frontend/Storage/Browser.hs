@@ -20,7 +20,6 @@ import Frontend.Storage.Class
 import GHCJS.DOM.Types (fromJSString, toJSString)
 import Language.Javascript.JSaddle (MonadJSM)
 import Obelisk.Route.Frontend
-import Pact.Server.ApiV1Client (HasTransactionLogger)
 import Reflex.Dom hiding (fromJSString)
 import Reflex.Host.Class (MonadReflexCreateTrigger)
 
@@ -53,7 +52,6 @@ newtype BrowserStorageT m a = BrowserStorageT
     , DomBuilder t, NotReady t, MonadHold t, MonadSample t
     , TriggerEvent t, PostBuild t, HasJS x
     , MonadReflexCreateTrigger t, MonadQuery t q, Requester t
-    , HasTransactionLogger
     )
 
 instance PerformEvent t m => PerformEvent t (BrowserStorageT m) where

@@ -7,7 +7,6 @@
 module Frontend where
 
 import           Reflex.Dom.Core
-import Pact.Server.ApiV1Client (runTransactionLoggerT, logTransactionStdout)
 
 import           Obelisk.Frontend
 import           Obelisk.Route.Frontend
@@ -51,5 +50,5 @@ frontend :: Frontend (R FrontendRoute)
 frontend = Frontend
   { _frontend_head = blank
   , _frontend_body = prerender_ blank $ do
-    mapRoutedT (flip runTransactionLoggerT logTransactionStdout . runBrowserStorageT . runBrowserCryptoT) app
+    mapRoutedT (runBrowserStorageT . runBrowserCryptoT) app
   }
