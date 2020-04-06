@@ -102,7 +102,6 @@ library
   exposed-modules: Frontend
                  , Frontend.Crypto.Ed25519
                  , Frontend.Foundation
-                 , Frontend.Storage
                  , Frontend.Storage.Class
                  , Frontend.Storage.Browser
                  , Frontend.Store

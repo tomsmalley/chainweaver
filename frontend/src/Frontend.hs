@@ -12,7 +12,8 @@ import           Obelisk.Frontend
 import           Obelisk.Route.Frontend
 
 import           Common.Route
-import           Frontend.Storage
+import Frontend.Storage.Class (HasStorage)
+import Frontend.Storage.Browser (runBrowserStorageT)
 
 import Language.Javascript.JSaddle (liftJSM)
 import Obelisk.Route (R)

@@ -6,23 +6,11 @@
 {-# LANGUAGE UndecidableInstances #-}
 
 module Frontend.Storage.Class
-  ( localStorage
-  , sessionStorage
-  , getItemStorage
-  , setItemStorage
-  , removeItemStorage
-  , dumpLocalStorage
-  , backupLocalStorage
-  , restoreLocalStorage
-  , restoreLocalStorageDump
-  , getCurrentVersion
+  ( backupLocalStorage
   , StoreType (..)
   , HasStorage(..)
-  -- Versioning Stuff
-  , StorageVersioner(..)
   , StoreKeyMetaPrefix(..)
-  , VersioningError(..)
-  , StorageVersion
+  , VersioningError
   ) where
 
 import Control.Monad.Reader
@@ -84,16 +72,6 @@ getItemStorage
   => StoreType -> k a -> m (Maybe a)
 getItemStorage st k = (decodeText =<<) <$> getItemStorage' st (keyToText k)
 
-setItemStorage
-  :: (HasStorage m, GShow k, Aeson.ToJSON a)
-  => StoreType -> k a -> a -> m ()
-setItemStorage st k = setItemStorage' st (keyToText k) . encodeText
-
-removeItemStorage
-  :: (HasStorage m, GShow k)
-  => StoreType -> k a -> m ()
-removeItemStorage s k = removeItemStorage' s (keyToText k)
-
 currentVersionKeyText :: StoreKeyMetaPrefix -> Text
 currentVersionKeyText (StoreKeyMetaPrefix p) = (p <> "_Version")
 
@@ -112,13 +90,6 @@ getCurrentVersion
   -> m Natural
 getCurrentVersion p = fromMaybe 0 . (decodeText =<<) <$> getItemStorage' localStorage (currentVersionKeyText p)
 
-setCurrentVersion
-  :: HasStorage m
-  => StoreKeyMetaPrefix
-  -> Natural
-  -> m ()
-setCurrentVersion p = setItemStorage' localStorage (currentVersionKeyText p) . encodeText
-
 getLatestBackupSequence
   :: (HasStorage m, Functor m)
   => StoreKeyMetaPrefix
@@ -133,20 +104,6 @@ setLatestBackupSequence
   -> Natural
   -> m ()
 setLatestBackupSequence p ver = setItemStorage' localStorage (latestBackupSequenceKeyText p ver) . encodeText
-
-getBackup
-  :: forall storeKeys m
-  .  ( HasStorage m
-     , Functor m
-     , FromJSON (Some storeKeys)
-     , Has' FromJSON storeKeys Identity
-     , GCompare storeKeys
-     )
-  => StoreKeyMetaPrefix
-  -> Natural
-  -> Natural
-  -> m (Maybe (DMap storeKeys Identity))
-getBackup p ver seqNo = (decodeText =<<) <$> getItemStorage' localStorage (backupKeyText p ver seqNo)
 
 setBackup
   :: ( HasStorage m
@@ -186,29 +143,6 @@ backupLocalStorage p _ expectedVer = do
       setLatestBackupSequence p expectedVer thisSeqNo
       pure (Just dump)
 
-restoreLocalStorage
-  :: forall storeKeys m
-  . ( HasStorage m
-    , Monad m
-    , GCompare storeKeys
-    , Has' FromJSON storeKeys Identity
-    , Has ToJSON storeKeys
-    , FromJSON (Some storeKeys)
-    , GShow storeKeys
-    )
-  => StoreKeyMetaPrefix
-  -> Proxy storeKeys
-  -> Natural
-  -> Natural
-  -> m Bool
-restoreLocalStorage p _ ver seqNo = do
-  mDump <- getBackup @storeKeys p ver seqNo
-  case mDump of
-    Nothing -> pure False
-    Just dump -> do
-      restoreLocalStorageDump p dump ver
-      pure True
-
 dumpLocalStorage
   :: forall storeKeys m
   . ( HasStorage m
@@ -225,48 +159,14 @@ dumpLocalStorage = fmap (DMap.fromList . catMaybes)
   )
   $ universeSome @storeKeys
 
-restoreLocalStorageDump
-  :: forall storeKeys m
-  . ( HasStorage m
-    , Monad m
-    , Has ToJSON storeKeys
-    , GShow storeKeys
-    )
-  => StoreKeyMetaPrefix
-  -> DMap storeKeys Identity
-  -> Natural
-  -> m ()
-restoreLocalStorageDump p dump ver = do
-  for_ (DMap.toList dump) setSum
-  setCurrentVersion p ver
-  where
-    setSum :: DSum storeKeys Identity -> m ()
-    setSum (k :=> ( Identity v )) =
-      has @ToJSON k $ setItemStorage localStorage k v
-
 keyToText :: (GShow k) => k a -> Text
 keyToText = T.pack . gshow
 
-type StorageVersion = Natural
-data VersioningError
-  = VersioningError_UnknownVersion StorageVersion
-
-
-data StorageVersioner m ( k :: * -> * ) = StorageVersioner
-  { _storageVersioner_metaPrefix :: StoreKeyMetaPrefix
-  , _storageVersioner_upgrade :: m (Maybe VersioningError)
-  -- It's entirely possible that a simpler just "copy the directory" or copy "all the storage keys" is
-  -- a better way here, but lets explore this route and see what falls out for export / import
-  , _storageVersioner_backupVersion :: m (Maybe VersioningError)
-  }
+type VersioningError = ()
 
 -- | Get access to browser's local storage.
 localStorage :: StoreType
 localStorage = StoreType_Local
-
--- | Get access to browser's session storage.
-sessionStorage :: StoreType
-sessionStorage = StoreType_Session
 
 class HasStorage m where
   getItemStorage' :: StoreType -> Text -> m (Maybe Text)

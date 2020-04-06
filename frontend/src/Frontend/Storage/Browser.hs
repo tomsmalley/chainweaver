@@ -6,8 +6,7 @@
 {-# LANGUAGE UndecidableInstances #-}
 
 module Frontend.Storage.Browser
-  ( BrowserStorageT(..)
-  , runBrowserStorageT
+  ( runBrowserStorageT
   ) where
 
 import Control.Monad.IO.Class (MonadIO)
