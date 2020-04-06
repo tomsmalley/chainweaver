@@ -18,86 +18,44 @@ library
   hs-source-dirs: src
 
   build-depends: base
-               , async
                , aeson-gadt-th
                , constraints
-               , unliftio
-               , unliftio-core
-               , ListZipper
                , aeson
-               , lens-aeson
-               , aeson-pretty
                , base16-bytestring
-               , bound
                , bytestring
                , common
                , constraints-extras
                , containers
                , data-default
-               , Decimal
                , dependent-map
                , dependent-sum
                , dependent-sum-aeson-orphans
                , dependent-sum-template
-               , errors
-               , exceptions
-               , free
-               , generic-deriving
                , ghcjs-dom
-               , here
-               , http-client
-               , http-client-tls
-               , http-types
                , jsaddle
-               , keycode
                , lens
-               , megaparsec
-               , modern-uri
-               , monoidal-containers
                , mtl
                , newtype-generics
                , obelisk-executable-config-lookup
                , obelisk-frontend
-               , obelisk-generated-static
                , obelisk-oauth-common
-               , obelisk-oauth-frontend
                , obelisk-route
                , pact
-               , prettyprinter
                , primitive
-               , random
                , reflex
                , reflex-dom
-               , reflex-dom-ace
                , reflex-dom-contrib
                , ref-tf
                , safe
                , servant
                , servant-client-core
                , servant-jsaddle
-               , servant-github
-               , split
-               , string-qq
                , template-haskell
                , text
-               , these
-               , these-lens
-               , time
                , th-extras
-               , transformers
-               , trifecta
                , universe
-               , unordered-containers
-               , kadena-signing-api
-               , base64-bytestring
-               , crc
-               , attoparsec
                , universe-base
                , universe-dependent-sum
-               , vector
-               , monad-logger
-               , fast-logger
-               , witherable
 
   exposed-modules: Frontend
                  , Frontend.Crypto.Ed25519
