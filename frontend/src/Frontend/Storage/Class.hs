@@ -11,7 +11,6 @@ module Frontend.Storage.Class
   , getItemStorage
   , setItemStorage
   , removeItemStorage
-  , removeKeyUniverse
   , dumpLocalStorage
   , backupLocalStorage
   , restoreLocalStorage
@@ -244,20 +243,6 @@ restoreLocalStorageDump p dump ver = do
     setSum :: DSum storeKeys Identity -> m ()
     setSum (k :=> ( Identity v )) =
       has @ToJSON k $ setItemStorage localStorage k v
-
-removeKeyUniverse
-  :: forall storeKeys m
-   . ( HasStorage m
-     , Monad m
-     , GShow storeKeys
-     , UniverseSome storeKeys
-     )
-  => Proxy storeKeys
-  -> StoreType
-  -> m ()
-removeKeyUniverse _ st =
-  traverse_ (\(Some k) -> removeItemStorage st k)
-  $ universeSome @storeKeys
 
 keyToText :: (GShow k) => k a -> Text
 keyToText = T.pack . gshow

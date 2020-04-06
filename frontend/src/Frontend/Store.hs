@@ -7,12 +7,9 @@ module Frontend.Store
 import Frontend.Storage.Class
 import Data.Aeson (FromJSON, ToJSON)
 import Data.Proxy (Proxy(Proxy))
-import Reflex
-import Reflex.Dom
 
 import qualified Frontend.Store.V0 as V0
 import qualified Frontend.Store.V1 as V1
-import Frontend.Store.V1 as Latest
 import Frontend.Crypto.Class
 
 prefix :: StoreKeyMetaPrefix
@@ -35,8 +32,6 @@ upgrade = do
             Nothing -> error "TODO Add a version error case for this"
             Just dump -> do
               v1Dump <- V1.upgradeFromV0 dump
-              removeKeyUniverse (Proxy @(V0.StoreFrontend key)) localStorage
-              removeKeyUniverse (Proxy @(V0.StoreFrontend key)) sessionStorage
               restoreLocalStorageDump prefix v1Dump 1
               pure Nothing
         1 -> pure Nothing
