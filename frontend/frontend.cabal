@@ -60,8 +60,6 @@ library
   exposed-modules: Frontend
                  , Frontend.Crypto.Ed25519
                  , Frontend.Foundation
-                 , Frontend.Storage.Class
-                 , Frontend.Storage.Browser
                  , Frontend.Store.TH
                  , Frontend.Store.V0
                  , Frontend.Store.V0.Wallet
