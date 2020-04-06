@@ -1,4 +1,4 @@
-module Frontend.Store.V0.Wallet where
+module Frontend.Store.V0.Wallet (Account(..), PublicKey(..), Accounts, NetworkMap(..), SomeAccount(..), ChainId(..), AccountName(..), AccountNotes(..), KeyPair(..)) where
 
 import Data.Aeson (ToJSON(..), FromJSON(..), Value(Null), object, (.=), (.:), withObject, (.:?), withText)
 import Data.ByteString (ByteString)
@@ -107,10 +107,6 @@ instance FromJSON key => FromJSON (KeyPair key) where
 data SomeAccount key
   = SomeAccount_Deleted
   | SomeAccount_Account (Account key)
-
-someAccount :: a -> (Account key -> a) -> SomeAccount key -> a
-someAccount a _ SomeAccount_Deleted = a
-someAccount _ f (SomeAccount_Account a) = f a
 
 instance ToJSON key => ToJSON (SomeAccount key) where
   toJSON = \case

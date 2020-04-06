@@ -6,16 +6,11 @@
 
 -- Limit API to the parts that are common to chainweb and `pact -s`.
 module Pact.Server.ApiV1Client
-  ( ApiV1API
-  , ApiV1Client(..)
+  ( ApiV1Client(local)
   , apiV1Client
-  , CommandLog(..)
-  , commandLogCurrentVersion
-  , HasTransactionLogger(..)
-  , TransactionLoggerT(..)
+  , HasTransactionLogger
   , runTransactionLoggerT
   , logTransactionStdout
-  , logTransactionFile
   ) where
 
 import Control.Lens

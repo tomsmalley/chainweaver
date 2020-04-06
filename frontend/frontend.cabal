@@ -117,6 +117,7 @@ library
                  , Pact.Server.ApiV1Client
 
   ghc-options: -Wall
+  -- -ddump-minimal-imports -dumpdir /home/lpsmith/ob/chainweaver/min-imports
   default-extensions: ScopedTypeVariables
                     , FlexibleContexts
                     , FlexibleInstances

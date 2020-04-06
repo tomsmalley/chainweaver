@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TemplateHaskellQuotes #-}
-module Frontend.Store.TH where
+module Frontend.Store.TH (deriveStoreInstances) where
 
 import Control.Monad (replicateM, guard)
 import Data.List (intersperse)

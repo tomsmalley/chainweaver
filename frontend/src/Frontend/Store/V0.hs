@@ -2,7 +2,7 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TemplateHaskell #-}
-module Frontend.Store.V0 where
+module Frontend.Store.V0 ( StoreFrontend(StoreNetwork_Networks, StoreWallet_Keys)) where
 
 import Data.Aeson
 import Data.Aeson.GADT.TH
@@ -27,17 +27,7 @@ import Obelisk.OAuth.Common (AccessToken, OAuthState)
 data StoreFrontend key a where
   StoreWallet_Keys :: StoreFrontend key (Accounts key)
 
-  StoreNetwork_PublicMeta :: StoreFrontend key PublicMeta
-
   StoreNetwork_Networks :: StoreFrontend key NetworkMap
-  StoreNetwork_SelectedNetwork :: StoreFrontend key NetworkName
-
-  StoreOAuth_Tokens :: StoreFrontend key (Map OAuthProvider AccessToken)
-  StoreOAuth_State :: OAuthProvider -> StoreFrontend key OAuthState
-
-  StoreGist_GistRequested :: StoreFrontend key (GistMeta, Text)
-
-  StoreModuleExplorer_SessionFile :: StoreFrontend key Text
 
 deriving instance Show (StoreFrontend key a)
 
@@ -63,13 +53,7 @@ instance ArgDict c (StoreFrontend key) where
       )
   argDict = \case
     StoreWallet_Keys {} -> Dict
-    StoreNetwork_PublicMeta {} -> Dict
     StoreNetwork_Networks {} -> Dict
-    StoreNetwork_SelectedNetwork {} -> Dict
-    StoreOAuth_Tokens {} -> Dict
-    StoreOAuth_State {} -> Dict
-    StoreGist_GistRequested {} -> Dict
-    StoreModuleExplorer_SessionFile {} -> Dict
 
 deriveStoreInstances ''StoreFrontend
 deriveJSONGADT ''StoreFrontend
