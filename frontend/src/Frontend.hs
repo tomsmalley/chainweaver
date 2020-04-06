@@ -12,13 +12,11 @@ import           Obelisk.Frontend
 import           Obelisk.Route.Frontend
 
 import           Common.Route
-import           Frontend.Crypto.Browser
 import           Frontend.Storage
 
 import Language.Javascript.JSaddle (liftJSM)
 import Obelisk.Route (R)
 
-import Frontend.Crypto.Class
 import qualified Frontend.Store as Store
 
 import qualified Servant.Client.JSaddle            as S
@@ -34,7 +32,6 @@ import Frontend.Crypto.Ed25519
 app :: forall t m.
      ( MonadWidget t m
      , HasStorage m
-     , HasCrypto PrivateKey m
      )
   => RoutedT t (R FrontendRoute) m ()
 app = do
@@ -51,5 +48,5 @@ frontend :: Frontend (R FrontendRoute)
 frontend = Frontend
   { _frontend_head = blank
   , _frontend_body = prerender_ blank $ do
-    mapRoutedT (runBrowserStorageT . runBrowserCryptoT) app
+    mapRoutedT runBrowserStorageT app
   }
