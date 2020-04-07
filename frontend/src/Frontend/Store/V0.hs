@@ -4,18 +4,17 @@
 {-# LANGUAGE TemplateHaskell #-}
 module Frontend.Store.V0 ( StoreFrontend(StoreNetwork_Networks) ) where
 
-import Data.Aeson
-import Data.Aeson.GADT.TH
-import Data.Constraint (Dict(Dict))
-import Data.Constraint.Extras
+import Data.Aeson ( FromJSON(parseJSON), ToJSON(toJSON) )
+import Data.Aeson.GADT.TH ( deriveJSONGADT )
+import Data.Constraint ( Dict(Dict) )
+import Data.Constraint.Extras ( ArgDict(..) )
+import Frontend.Store.V0.Wallet ( NetworkMap )
 
-import Frontend.Store.V0.Wallet
+data StoreFrontend a where
+   StoreNetwork_Networks :: StoreFrontend NetworkMap
 
-data StoreFrontend key a where
-   StoreNetwork_Networks :: StoreFrontend key NetworkMap
-
-instance ArgDict c (StoreFrontend key) where
-  type ConstraintsFor (StoreFrontend key) c
+instance ArgDict c StoreFrontend where
+  type ConstraintsFor StoreFrontend c
     = ( c NetworkMap
       )
   argDict = \case

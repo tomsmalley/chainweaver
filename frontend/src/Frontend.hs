@@ -31,9 +31,6 @@ import qualified Pact.Types.Hash as Pact
 
 import qualified Frontend.Store.V0 as V0 (StoreFrontend)
 
-import Frontend.Crypto.Ed25519
-    ( PrivateKey )
-
 encodeText :: Aeson.ToJSON a => a -> Text
 encodeText = T.decodeUtf8 . BL.toStrict . Aeson.encode
 
@@ -42,7 +39,7 @@ app :: forall t m.
      )
   => RoutedT t (R FrontendRoute) m ()
 app = do
-  encodeText (DMap.empty :: DMap.DMap (V0.StoreFrontend PrivateKey) Identity) `seq` pure ()
+  encodeText (DMap.empty :: DMap.DMap V0.StoreFrontend Identity) `seq` pure ()
 
   let env = S.mkClientEnv $ S.BaseUrl S.Https "eu1.testnet.chainweb.com" 80 "/chainweb/0.0/testnet04/chain/8/pact"
       cmd = fmap T.decodeUtf8 $ Pact.Command "" [] $ Pact.hash ""
