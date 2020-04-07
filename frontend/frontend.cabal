@@ -54,11 +54,8 @@ library
                , text
 
   exposed-modules: Frontend
-                 , Frontend.Foundation
                  , Frontend.Store.V0
                  , Frontend.Store.V0.Wallet
-                 , Reflex.Extended
-                 , Reflex.Network.Extended
                  , Pact.Server.ApiV1Client
 
   ghc-options: -Wall
