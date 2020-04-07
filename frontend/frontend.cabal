@@ -60,7 +60,6 @@ library
   exposed-modules: Frontend
                  , Frontend.Crypto.Ed25519
                  , Frontend.Foundation
-                 , Frontend.Store.TH
                  , Frontend.Store.V0
                  , Frontend.Store.V0.Wallet
                  , Reflex.Extended
