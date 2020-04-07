@@ -21,36 +21,21 @@ library
                , aeson-gadt-th
                , constraints
                , aeson
-               , base16-bytestring
                , bytestring
                , common
                , constraints-extras
                , containers
-               , data-default
                , dependent-map
-               , dependent-sum
                , dependent-sum-aeson-orphans
-               , dependent-sum-template
-               , ghcjs-dom
                , jsaddle
-               , lens
                , mtl
-               , newtype-generics
-               , obelisk-executable-config-lookup
                , obelisk-frontend
-               , obelisk-oauth-common
                , obelisk-route
                , pact
-               , primitive
-               , reflex
-               , reflex-dom
-               , reflex-dom-contrib
-               , ref-tf
-               , safe
+               , reflex-dom-core
                , servant
                , servant-client-core
                , servant-jsaddle
-               , template-haskell
                , text
 
   exposed-modules: Frontend
