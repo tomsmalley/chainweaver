@@ -29,7 +29,6 @@ import           Data.Text            (Text)
 import qualified Data.Text            as T
 import           Data.Void            (Void)
 import           Text.Megaparsec      as MP
-import qualified Pact.Types.ChainId as Pact ( ChainId(..) )
 ------------------------------------------------------------------------------
 
 -- | A path segment is just a piece of `Text`.
@@ -55,10 +54,6 @@ class IsRefPath r where
 instance IsRefPath Text where
   renderRef = mkRefPath
   parseRef = anySingle
-
-instance IsRefPath Pact.ChainId where
-  renderRef = mkRefPath . Pact._chainId
-  parseRef = Pact.ChainId <$> anySingle
 
 -- | RefPath separator.
 --   We use \ as it won't get percent encoded in url encoding.
