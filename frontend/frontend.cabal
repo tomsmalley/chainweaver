@@ -100,36 +100,19 @@ library
 
   exposed-modules: Frontend
                  , Frontend.Store.V0
-                 , Pact.Server.ApiV1Client
     Common.Route
     Common.Network
     Common.RefPath
     Crypto.Hash.Blake2Native
-    Pact.Parse
-    Pact.Server.API
-    Pact.Types.Capability
     Pact.Types.ChainId
-    Pact.Types.ChainMeta
     Pact.Types.Codec
-    Pact.Types.Command
-    Pact.Types.Continuation
     Pact.Types.Exp
-    Pact.Types.Gas
     Pact.Types.Hash
     Pact.Types.Info
-    Pact.Types.Lang
     Pact.Types.Names
     Pact.Types.Orphans
-    Pact.Types.PactError
-    Pact.Types.PactValue
     Pact.Types.Parser
-    Pact.Types.Perf
-    Pact.Types.Persistence
     Pact.Types.Pretty
-    Pact.Types.RPC
-    Pact.Types.Runtime
-    Pact.Types.SPV
-    Pact.Types.Scheme
     Pact.Types.SizeOf
     Pact.Types.Term
     Pact.Types.Type
