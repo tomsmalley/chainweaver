@@ -33,12 +33,70 @@ library
                , mtl
                , obelisk-frontend
                , obelisk-route
-               , pact
                , reflex-dom-core
                , servant
                , servant-client-core
                , servant-jsaddle
                , text
+               , ghcjs-dom
+               , ghcjs-base
+               , ghcjs-prim
+                     , Decimal >= 0.4.2 && < 0.6
+                     , aeson >= 0.11.3.0 && < 1.5
+                     , algebraic-graphs >= 0.2 && < 0.6
+                     , prettyprinter >= 1.2 && < 1.6.1
+                     , prettyprinter-ansi-terminal >= 1.1 && < 1.2
+                     , attoparsec >= 0.13.0.2 && < 0.14
+                     , base >=4.9.0.0 && < 4.14
+                     , base16-bytestring >=0.1.1.6 && < 0.2
+                     , base64-bytestring >= 1.0.0.1
+                     , bound >= 2 && < 2.1
+                     , bytestring >=0.10.8.1 && < 0.11
+                     , cassava >= 0.5
+                     , cereal >=0.5.4.0 && < 0.6
+                     , containers >= 0.5.7 && < 0.7
+                     , data-default >= 0.7.1.1 && < 0.8
+                     , deepseq >= 1.4.2.0 && < 1.5
+                     , deriving-compat >= 0.5.1
+                     , directory >= 1.2.6.2 && < 1.4
+                     , errors >= 2.3
+                     , exceptions >= 0.8.3 && < 0.11
+                     , filepath >= 1.4.1.0 && < 1.5
+                     , hashable >= 1.2.4.0 && < 1.4
+                     , hspec >= 2.2.4 && < 2.8
+                     , lens >= 4.14 && < 4.19
+                     , lens-aeson >= 1.0.0.5 && < 1.2
+                     , megaparsec >= 7 && < 8
+                     , mtl >= 2.2.1 && < 2.3
+                     , old-locale >= 1.0.0.7 && < 1.1
+                     , optparse-applicative >= 0.12.1.0 && < 0.16
+                     , parsers >= 0.12.4 && < 0.13
+                     , QuickCheck >= 2.12.6.1
+                     , quickcheck-instances >= 0.3
+                     , reflection
+                     , safe >= 0.3.11 && < 0.4
+                     , scientific >= 0.3.4.9 && < 0.4
+                     , semigroups >= 0.18.2 && < 0.20
+                     , semigroupoids >= 5.0
+                     , stm >= 2.4.4.1 && < 2.6
+                     , text >= 1.2.2.1 && < 1.3
+                     -- kadena ghcjs compat fork
+                     , thyme == 0.3.6.0
+                     , transformers >= 0.5.2.0 && < 0.6
+                     , trifecta >= 2.1
+                     , unordered-containers >= 0.2.7.2 && < 0.3
+                     , utf8-string >= 1.0.1.1 && < 1.1
+                     , vector >= 0.11.0.0 && < 0.13
+                     , vector-algorithms >= 0.7
+                     , vector-space >= 0.10.4 && < 0.17
+                     , mmorph >= 1.1 && < 1.2
+                     , constraints
+                     , servant
+                     , servant-client
+                     , servant-client-core
+                     , servant-swagger
+                     , swagger2 >= 2.3 && < 2.6
+
 
   exposed-modules: Frontend
                  , Frontend.Store.V0
@@ -46,7 +104,68 @@ library
     Common.Route
     Common.Network
     Common.RefPath
-
+                   Pact.Analyze.Remote.Client
+                   Crypto.Hash.Blake2Native
+                     , Pact.Analyze.Remote.Types
+                     , Pact.Compile
+                     , Pact.Eval
+                     , Pact.Gas
+                     , Pact.Gas.Table
+                     , Pact.Native
+                     , Pact.Native.Capabilities
+                     , Pact.Native.Db
+                     , Pact.Native.Internal
+                     , Pact.Native.SPV
+                     , Pact.Native.Time
+                     , Pact.Native.Ops
+                     , Pact.Native.Keysets
+                     , Pact.Native.Decrypt
+                     , Pact.Parse
+                     , Pact.PersistPactDb
+                     , Pact.Persist
+                     , Pact.Persist.Pure
+                     , Pact.Repl
+                     , Pact.Repl.Lib
+                     , Pact.Repl.Types
+                     , Pact.Runtime.Capabilities
+                     , Pact.Runtime.Typecheck
+                     , Pact.Server.API
+                     , Pact.Types.API
+                     , Pact.Types.Capability
+                     , Pact.Types.ChainId
+                     , Pact.Types.ChainMeta
+                     , Pact.Types.Codec
+                     , Pact.Types.Command
+                     , Pact.Types.Continuation
+                     , Pact.Types.Scheme
+                     , Pact.Types.Exp
+                     , Pact.Types.ExpParser
+                     , Pact.Types.Gas
+                     , Pact.Types.Hash
+                     , Pact.Types.Info
+                     , Pact.Types.Lang
+                     , Pact.Types.Logger
+                     , Pact.Types.Names
+                     , Pact.Types.Native
+                     , Pact.Types.PactError
+                     , Pact.Types.PactValue
+                     , Pact.Types.Parser
+                     , Pact.Types.Perf
+                     , Pact.Types.Persistence
+                     , Pact.Types.Pretty
+                     , Pact.Types.Purity
+                     , Pact.Types.RPC
+                     , Pact.Types.Runtime
+                     , Pact.Types.Orphans
+                     , Pact.Types.SizeOf
+                     , Pact.Types.SPV
+                     , Pact.Types.Swagger
+                     , Pact.Types.Term
+                     , Pact.Types.Type
+                     , Pact.Types.Util
+                     , Pact.Types.Version
+                     , Pact.Types.Typecheck
+                     , Pact.Typechecker
   ghc-options: -Wall
   -- -ddump-minimal-imports -dumpdir /home/lpsmith/ob/chainweaver/min-imports
   default-extensions: ScopedTypeVariables
