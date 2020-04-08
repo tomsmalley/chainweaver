@@ -1,7 +1,6 @@
 {-# LANGUAGE KindSignatures #-}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE ScopedTypeVariables #-}
@@ -10,18 +9,11 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 
 module Pact.Types.Hash
-  (
-  -- Bytestring hashing
-    Hash(..)
-  , hash
+  ( Hash
   , hashToText
-  , verifyHash
-  , initialHash
-  , hashLength
-  , TypedHash(..)
-  , toUntypedHash, fromUntypedHash
-  , HashAlgo(..)
-  , PactHash, pactHash, pactInitialHash, pactHashLength
+  , pactInitialHash
+  , PactHash
+  , hash
   ) where
 
 
@@ -40,18 +32,7 @@ import Data.Reflection
 import Data.Proxy
 import Test.QuickCheck
 
-#if !defined(ghcjs_HOST_OS)
-
-import qualified Data.ByteArray as ByteArray
-import qualified Crypto.Hash as Crypto
-
-#else
-
 import Crypto.Hash.Blake2Native
-
-#endif
-
-
 
 -- | Untyped hash value, encoded with unpadded base64url.
 -- Within Pact these are blake2b_256 but unvalidated as such,
@@ -158,23 +139,6 @@ pactHash = toUntypedHash . (hash :: ByteString -> PactHash)
 pactInitialHash :: Hash
 pactInitialHash = toUntypedHash $ (initialHash :: PactHash)
 
-pactHashLength :: Int
-pactHashLength = hashLength Blake2b_256
-
-
-#if !defined(ghcjs_HOST_OS)
-
-hash :: forall h . Reifies h HashAlgo => ByteString -> TypedHash h
-hash = TypedHash . go
-  where
-    algo = reflect (Proxy :: Proxy h)
-    go = case algo of
-      Blake2b_256 -> ByteArray.convert . Crypto.hashWith Crypto.Blake2b_256
-      SHA3_256 -> ByteArray.convert . Crypto.hashWith Crypto.SHA3_256
-{-# INLINE hash #-}
-
-#else
-
 hash :: forall h . Reifies h HashAlgo => ByteString -> TypedHash h
 hash bs = TypedHash go
   where
@@ -184,16 +148,6 @@ hash bs = TypedHash go
         Left _ -> error "hashing failed"
         Right h -> h
       _ -> error $ "Unsupported hash algo: " ++ show algo
-
-#endif
-verifyHash :: Reifies h HashAlgo => TypedHash h -> ByteString -> Either String Hash
-verifyHash h b = if hashed == h
-  then Right (toUntypedHash h)
-  else Left $ "Hash Mismatch, received " ++ renderCompactString h ++
-              " but our hashing resulted in " ++ renderCompactString hashed
-  where hashed = hash b
-{-# INLINE verifyHash #-}
-
 
 initialHash :: Reifies h HashAlgo => TypedHash h
 initialHash = hash mempty
