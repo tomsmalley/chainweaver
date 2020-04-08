@@ -104,68 +104,40 @@ library
     Common.Route
     Common.Network
     Common.RefPath
-                   Pact.Analyze.Remote.Client
-                   Crypto.Hash.Blake2Native
-                     , Pact.Analyze.Remote.Types
-                     , Pact.Compile
-                     , Pact.Eval
-                     , Pact.Gas
-                     , Pact.Gas.Table
-                     , Pact.Native
-                     , Pact.Native.Capabilities
-                     , Pact.Native.Db
-                     , Pact.Native.Internal
-                     , Pact.Native.SPV
-                     , Pact.Native.Time
-                     , Pact.Native.Ops
-                     , Pact.Native.Keysets
-                     , Pact.Native.Decrypt
-                     , Pact.Parse
-                     , Pact.PersistPactDb
-                     , Pact.Persist
-                     , Pact.Persist.Pure
-                     , Pact.Repl
-                     , Pact.Repl.Lib
-                     , Pact.Repl.Types
-                     , Pact.Runtime.Capabilities
-                     , Pact.Runtime.Typecheck
-                     , Pact.Server.API
-                     , Pact.Types.API
-                     , Pact.Types.Capability
-                     , Pact.Types.ChainId
-                     , Pact.Types.ChainMeta
-                     , Pact.Types.Codec
-                     , Pact.Types.Command
-                     , Pact.Types.Continuation
-                     , Pact.Types.Scheme
-                     , Pact.Types.Exp
-                     , Pact.Types.ExpParser
-                     , Pact.Types.Gas
-                     , Pact.Types.Hash
-                     , Pact.Types.Info
-                     , Pact.Types.Lang
-                     , Pact.Types.Logger
-                     , Pact.Types.Names
-                     , Pact.Types.Native
-                     , Pact.Types.PactError
-                     , Pact.Types.PactValue
-                     , Pact.Types.Parser
-                     , Pact.Types.Perf
-                     , Pact.Types.Persistence
-                     , Pact.Types.Pretty
-                     , Pact.Types.Purity
-                     , Pact.Types.RPC
-                     , Pact.Types.Runtime
-                     , Pact.Types.Orphans
-                     , Pact.Types.SizeOf
-                     , Pact.Types.SPV
-                     , Pact.Types.Swagger
-                     , Pact.Types.Term
-                     , Pact.Types.Type
-                     , Pact.Types.Util
-                     , Pact.Types.Version
-                     , Pact.Types.Typecheck
-                     , Pact.Typechecker
+    Crypto.Hash.Blake2Native
+    Pact.Analyze.Remote.Types
+    Pact.Parse
+    Pact.Server.API
+    Pact.Types.API
+    Pact.Types.Capability
+    Pact.Types.ChainId
+    Pact.Types.ChainMeta
+    Pact.Types.Codec
+    Pact.Types.Command
+    Pact.Types.Continuation
+    Pact.Types.Exp
+    Pact.Types.Gas
+    Pact.Types.Hash
+    Pact.Types.Info
+    Pact.Types.Lang
+    Pact.Types.Names
+    Pact.Types.Orphans
+    Pact.Types.PactError
+    Pact.Types.PactValue
+    Pact.Types.Parser
+    Pact.Types.Perf
+    Pact.Types.Persistence
+    Pact.Types.Pretty
+    Pact.Types.RPC
+    Pact.Types.Runtime
+    Pact.Types.SPV
+    Pact.Types.Scheme
+    Pact.Types.SizeOf
+    Pact.Types.Swagger
+    Pact.Types.Term
+    Pact.Types.Type
+    Pact.Types.Util
+
   ghc-options: -Wall
   -- -ddump-minimal-imports -dumpdir /home/lpsmith/ob/chainweaver/min-imports
   default-extensions: ScopedTypeVariables
