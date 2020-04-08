@@ -6,30 +6,26 @@
 
 module Frontend where
 
-import           Reflex.Dom.Core
-
-import           Obelisk.Frontend
-import           Obelisk.Route.Frontend
-
-import           Common.Route
-
-import Language.Javascript.JSaddle (liftJSM)
-import Obelisk.Route (R)
-
-import qualified Servant.Client.JSaddle            as S
-
-import qualified Data.Aeson as Aeson
-import qualified Data.ByteString.Lazy as BL
-import qualified Data.Dependent.Map as DMap
+import Reflex.Dom.Core ( prerender_, blank, MonadWidget )
+import Obelisk.Frontend ( Frontend(..) )
+import Obelisk.Route.Frontend ( RoutedT )
+import Common.Route ( FrontendRoute )
+import Language.Javascript.JSaddle ( liftJSM )
+import Obelisk.Route ( R )
+import qualified Servant.Client.JSaddle as S
+    ( BaseUrl(BaseUrl), Scheme(Https), mkClientEnv, runClientM )
+import qualified Data.Aeson as Aeson ( ToJSON, encode )
+import qualified Data.ByteString.Lazy as BL ( toStrict )
+import qualified Data.Dependent.Map as DMap ( DMap, empty )
 import Data.Dependent.Sum.Orphans ()
-import Data.Functor.Identity (Identity)
-import Data.Text (Text)
-import qualified Data.Text.Encoding as T
+import Data.Functor.Identity ( Identity )
+import Data.Text ( Text )
+import qualified Data.Text.Encoding as T ( decodeUtf8 )
 import Pact.Server.ApiV1Client as Pact
-import qualified Pact.Types.Command as Pact
-import qualified Pact.Types.Hash as Pact
-
-import qualified Frontend.Store.V0 as V0 (StoreFrontend)
+    ( ApiV1Client(local), apiV1Client )
+import qualified Pact.Types.Command as Pact ( Command(Command) )
+import qualified Pact.Types.Hash as Pact ( hash )
+import qualified Frontend.Store.V0 as V0 ( StoreFrontend )
 
 encodeText :: Aeson.ToJSON a => a -> Text
 encodeText = T.decodeUtf8 . BL.toStrict . Aeson.encode

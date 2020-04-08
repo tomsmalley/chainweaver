@@ -8,14 +8,14 @@ import Data.Aeson ( FromJSON(parseJSON), ToJSON(toJSON) )
 import Data.Aeson.GADT.TH ( deriveJSONGADT )
 import Data.Constraint ( Dict(Dict) )
 import Data.Constraint.Extras ( ArgDict(..) )
-import Frontend.Store.V0.Wallet ( NetworkMap )
+import Common.Network ( NodeRef )
 
 data StoreFrontend a where
-   StoreNetwork_Networks :: StoreFrontend NetworkMap
+   StoreNetwork_Networks :: StoreFrontend NodeRef
 
 instance ArgDict c StoreFrontend where
   type ConstraintsFor StoreFrontend c
-    = ( c NetworkMap
+    = ( c NodeRef
       )
   argDict = \case
     StoreNetwork_Networks {} -> Dict

@@ -33,7 +33,6 @@ library
                , modern-uri
                , mtl
                , obelisk-frontend
-               , obelisk-oauth-common
                , obelisk-route
                , pact
                , reflex-dom-core
@@ -44,7 +43,6 @@ library
 
   exposed-modules: Frontend
                  , Frontend.Store.V0
-                 , Frontend.Store.V0.Wallet
                  , Pact.Server.ApiV1Client
     Common.Route
     Common.Network
