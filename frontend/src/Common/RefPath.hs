@@ -29,7 +29,7 @@ import           Data.Text            (Text)
 import qualified Data.Text            as T
 import           Data.Void            (Void)
 import           Text.Megaparsec      as MP
-import qualified Pact.Types.ChainId   as Pact
+import qualified Pact.Types.ChainId as Pact ( ChainId(..) )
 ------------------------------------------------------------------------------
 
 -- | A path segment is just a piece of `Text`.

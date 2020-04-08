@@ -13,9 +13,9 @@ import Control.Monad.IO.Class
 import Control.Monad.Reader hiding (local)
 import Data.Proxy
 import Data.Text (Text)
-import Pact.Server.API
-import Pact.Types.Command
-import Pact.Types.Hash (Hash)
+import Pact.Server.API ( apiV1API )
+import Pact.Types.Command ( Command, CommandResult )
+import Pact.Types.Hash ( Hash )
 import Servant.API
 import Servant.Client.Core hiding (Client)
 import Servant.Client.JSaddle hiding (Client)
