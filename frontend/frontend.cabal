@@ -22,7 +22,6 @@ library
                , constraints
                , aeson
                , bytestring
-               , common
                , constraints-extras
                , containers
                , dependent-map
@@ -37,11 +36,53 @@ library
                , servant-client-core
                , servant-jsaddle
                , text
+               , base16-bytestring
+               , aeson
+               , containers
+               , dependent-sum
+               , dependent-sum-template
+               , generic-deriving
+               , modern-uri
+               , mtl
+               , obelisk-oauth-common
+               , obelisk-executable-config-lookup
+               , obelisk-route
+               , data-default
+               , Decimal
+               , kadena-signing-api
+               , text
+               , lens
+               , newtype-generics
+               , prettyprinter
+               , pact
+               , split
+               , bytestring
+               , tasty
+               , tasty-golden
+               , template-haskell
+               , megaparsec
+               , safe
+               , errors
+               , unliftio
+               , universe
+               , unordered-containers
+               , case-insensitive
 
   exposed-modules: Frontend
                  , Frontend.Store.V0
                  , Frontend.Store.V0.Wallet
                  , Pact.Server.ApiV1Client
+    Common.Api
+    Common.GistStore
+    Common.Route
+    Common.OAuth
+    Common.Network
+    Common.Orphans
+    Common.RefPath
+    Common.Foundation
+    Common.Wallet
+
+    Common.Tests.GoldenHelper
 
   ghc-options: -Wall
   -- -ddump-minimal-imports -dumpdir /home/lpsmith/ob/chainweaver/min-imports
@@ -71,7 +112,6 @@ executable frontend
   default-language: Haskell2010
 
   build-depends: base
-               , common
                , reflex-dom
                , obelisk-generated-static
                , obelisk-frontend
