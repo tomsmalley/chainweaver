@@ -16,7 +16,6 @@ import Data.Text (Text)
 import Pact.Server.API ( apiV1API )
 import Pact.Types.Command ( Command, CommandResult )
 import Pact.Types.Hash ( Hash )
-import Servant.API
 import Servant.Client.Core hiding (Client)
 import Servant.Client.JSaddle hiding (Client)
 
@@ -31,4 +30,4 @@ apiV1Client = ApiV1Client
   { local = localF
   }
   where
-    _sendF :<|> _pollF :<|> _listenF :<|> localF = clientIn apiV1API (Proxy :: Proxy m)
+    localF = clientIn apiV1API (Proxy :: Proxy m)

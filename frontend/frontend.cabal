@@ -105,10 +105,8 @@ library
     Common.Network
     Common.RefPath
     Crypto.Hash.Blake2Native
-    Pact.Analyze.Remote.Types
     Pact.Parse
     Pact.Server.API
-    Pact.Types.API
     Pact.Types.Capability
     Pact.Types.ChainId
     Pact.Types.ChainMeta
@@ -133,7 +131,6 @@ library
     Pact.Types.SPV
     Pact.Types.Scheme
     Pact.Types.SizeOf
-    Pact.Types.Swagger
     Pact.Types.Term
     Pact.Types.Type
     Pact.Types.Util
