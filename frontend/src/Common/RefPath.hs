@@ -16,21 +16,8 @@
 --
 
 module Common.RefPath
-  ( -- * Types and classes
-    -- ** Paths
-    RefPath (..)
-  , PathSegment
-    -- ** Reference parsing
-  , RefParser
-  , IsRefPath (..)
-  , tryParseRef
-  , runParseRef
-    -- * Handle `RefPath`s
-  , parsePath
-  , renderPath
+  ( IsRefPath (..)
   , mkRefPath
-    -- * Backports of newer megaparsec:
-  , anySingle
   ) where
 
 ------------------------------------------------------------------------------
@@ -72,16 +59,6 @@ instance IsRefPath Text where
 instance IsRefPath Pact.ChainId where
   renderRef = mkRefPath . Pact._chainId
   parseRef = Pact.ChainId <$> anySingle
-
--- | Try to parse a ref.
---
---   Same as `try parseRef`
-tryParseRef :: IsRefPath r => RefParser r
-tryParseRef = MP.try parseRef
-
--- | Actually run a `RefPath` parser.
-runParseRef :: IsRefPath r => RefPath -> Maybe r
-runParseRef = MP.parseMaybe parseRef
 
 -- | RefPath separator.
 --   We use \ as it won't get percent encoded in url encoding.

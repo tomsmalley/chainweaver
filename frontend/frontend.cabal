@@ -72,17 +72,9 @@ library
                  , Frontend.Store.V0
                  , Frontend.Store.V0.Wallet
                  , Pact.Server.ApiV1Client
-    Common.Api
-    Common.GistStore
     Common.Route
-    Common.OAuth
     Common.Network
-    Common.Orphans
     Common.RefPath
-    Common.Foundation
-    Common.Wallet
-
-    Common.Tests.GoldenHelper
 
   ghc-options: -Wall
   -- -ddump-minimal-imports -dumpdir /home/lpsmith/ob/chainweaver/min-imports

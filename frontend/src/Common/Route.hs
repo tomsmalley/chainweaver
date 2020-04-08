@@ -9,7 +9,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module Common.Route where
+module Common.Route (FrontendRoute(..), backendRouteEncoder) where
 
 {- -- You will probably want these imports for composing Encoders.
 import Prelude hiding (id, (.))
