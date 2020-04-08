@@ -9,25 +9,20 @@
 {-# LANGUAGE ViewPatterns #-}
 
 module Common.Network
-  ( NetworkName
-  , NodeRef
+  ( NodeRef
   ) where
 
 import Control.Applicative ((<|>))
 import Control.Arrow (left)
 import Control.Lens
-import Control.Monad
 import Control.Monad.Except (MonadError, liftEither, runExceptT)
 import Data.Aeson
-import Data.CaseInsensitive (CI)
 import Data.Maybe (fromMaybe)
 import Data.Text (Text)
 import Data.Void (Void)
 import GHC.Generics (Generic)
 import Text.URI.Lens
 
-import qualified Data.Aeson.Types as A
-import qualified Data.CaseInsensitive as CI
 import qualified Data.Text as T
 import qualified Text.Megaparsec as MP
 import qualified Text.URI as URI hiding (uriPath)
@@ -36,24 +31,6 @@ import Common.RefPath as MP
 
 tshow :: Show a => a -> Text
 tshow = T.pack . show
-
--- | Name that uniquely describes a valid network.
-newtype NetworkName = NetworkName
-  { unNetworkName :: CI Text
-  } deriving (Eq, Ord, Show)
-
-instance FromJSON NetworkName where
-  parseJSON = either (fail . T.unpack) pure . mkNetworkName <=< parseJSON
-instance FromJSONKey NetworkName where
-  fromJSONKey = FromJSONKeyTextParser $ either (fail . T.unpack) pure . mkNetworkName
-instance ToJSON NetworkName where
-  toJSON = toJSON . CI.original . unNetworkName
-instance ToJSONKey NetworkName where
-  toJSONKey = A.toJSONKeyText (CI.original . unNetworkName)
-
--- | Construct a 'NetworkName', and banish mainnet - for now.
-mkNetworkName :: Text -> Either Text NetworkName
-mkNetworkName (T.strip -> t) = Right $ NetworkName $ CI.mk t
 
 -- | Reference for a node in a network.
 newtype NodeRef = NodeRef

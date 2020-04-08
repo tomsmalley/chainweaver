@@ -21,7 +21,6 @@ library
                , aeson
                , aeson-gadt-th
                , bytestring
-               , case-insensitive
                , constraints
                , constraints-extras
                , containers
