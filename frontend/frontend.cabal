@@ -18,17 +18,22 @@ library
   hs-source-dirs: src
 
   build-depends: base
-               , aeson-gadt-th
-               , constraints
                , aeson
+               , aeson-gadt-th
                , bytestring
+               , case-insensitive
+               , constraints
                , constraints-extras
                , containers
                , dependent-map
                , dependent-sum-aeson-orphans
                , jsaddle
+               , lens
+               , megaparsec
+               , modern-uri
                , mtl
                , obelisk-frontend
+               , obelisk-oauth-common
                , obelisk-route
                , pact
                , reflex-dom-core
@@ -36,37 +41,6 @@ library
                , servant-client-core
                , servant-jsaddle
                , text
-               , base16-bytestring
-               , aeson
-               , containers
-               , dependent-sum
-               , dependent-sum-template
-               , generic-deriving
-               , modern-uri
-               , mtl
-               , obelisk-oauth-common
-               , obelisk-executable-config-lookup
-               , obelisk-route
-               , data-default
-               , Decimal
-               , kadena-signing-api
-               , text
-               , lens
-               , newtype-generics
-               , prettyprinter
-               , pact
-               , split
-               , bytestring
-               , tasty
-               , tasty-golden
-               , template-haskell
-               , megaparsec
-               , safe
-               , errors
-               , unliftio
-               , universe
-               , unordered-containers
-               , case-insensitive
 
   exposed-modules: Frontend
                  , Frontend.Store.V0
