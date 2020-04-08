@@ -24,7 +24,6 @@ import qualified Data.Text.Encoding as T ( decodeUtf8 )
 import Pact.Server.ApiV1Client as Pact
     ( ApiV1Client(local), apiV1Client )
 import qualified Pact.Types.Command as Pact ( Command(Command) )
-import qualified Pact.Types.Hash as Pact ( hash )
 import qualified Frontend.Store.V0 as V0 ( StoreFrontend )
 
 encodeText :: Aeson.ToJSON a => a -> Text
@@ -38,9 +37,8 @@ app = do
   encodeText (DMap.empty :: DMap.DMap V0.StoreFrontend Identity) `seq` pure ()
 
   let env = S.mkClientEnv $ S.BaseUrl S.Https "eu1.testnet.chainweb.com" 80 "/chainweb/0.0/testnet04/chain/8/pact"
-      cmd = fmap T.decodeUtf8 $ Pact.Command "" [] $ Pact.hash ""
 
-  _ <- liftJSM $ flip S.runClientM env $ Pact.local apiV1Client cmd
+  _ <- liftJSM $ flip S.runClientM env $ Pact.local apiV1Client $ Pact.Command
 
   pure ()
 
