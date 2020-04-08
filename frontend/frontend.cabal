@@ -23,7 +23,6 @@ library
                , bytestring
                , constraints
                , constraints-extras
-               , containers
                , dependent-map
                , dependent-sum-aeson-orphans
                , jsaddle
@@ -35,7 +34,6 @@ library
                , obelisk-route
                , reflex-dom-core
                , servant
-               , servant-client-core
                , servant-jsaddle
                , text
 
