@@ -38,8 +38,6 @@ instance ToJSON NodeRef where
 instance IsRefPath NodeRef where
   renderRef = mkRefPath . renderNodeRef
 
-  parseRef = undefined
-
 renderNodeRef :: NodeRef -> Text
 renderNodeRef (NodeRef (URI.Authority mUser h mp)) =
     maybe "" ((<> "@") . renderUser) mUser <> URI.unRText h <> maybe "" ((":" <>) . tshow) mp
