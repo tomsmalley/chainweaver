@@ -23,5 +23,5 @@ then you've reproduced the bug.  An alternative nix workflow that is faster for 
 ```
 nix-shell -A ghcjs.frontend.env
 cabal new-configure --ghcjs
-cabal new-build && open dist-newstyle/build/x86_64-linux/ghcjs-8.6.0.1/frontend-1.5.1.2/x/frontend/build/frontend/frontend.jsexe/index.html
+cabal new-build frontend && open dist-newstyle/build/x86_64-linux/ghcjs-8.6.0.1/frontend-1.5.1.2/x/frontend/build/frontend/frontend.jsexe/index.html
 ```
