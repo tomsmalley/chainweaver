@@ -37,7 +37,6 @@ executable frontend
   other-modules:
     Frontend.Store.V0
     Common.Network
-    Common.RefPath
 
   ghc-options: -Wall
      -ddump-minimal-imports -dumpdir /home/lpsmith/ob/chainweaver/min-imports

@@ -1,12 +1,4 @@
-{-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RankNTypes #-}
-{-# LANGUAGE ScopedTypeVariables #-}
-{-# LANGUAGE TupleSections #-}
-{-# LANGUAGE ViewPatterns #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 
 module Common.Network
   ( NodeRef
@@ -14,20 +6,14 @@ module Common.Network
 
 import Data.Aeson
 import Data.Text (Text)
-import GHC.Generics (Generic)
 
 import qualified Data.Text as T
 import qualified Text.URI as URI hiding (uriPath)
 
-import Common.RefPath as MP
-
 tshow :: Show a => a -> Text
 tshow = T.pack . show
 
-newtype NodeRef = NodeRef
-  { unNodeRef :: URI.Authority
-  }
-  deriving (Show, Eq, Ord, Generic)
+type NodeRef = URI.Authority
 
 instance FromJSON NodeRef where
   parseJSON = undefined
@@ -35,11 +21,20 @@ instance FromJSON NodeRef where
 instance ToJSON NodeRef where
   toJSON = undefined
 
+class IsRefPath r where
+  renderRef :: r -> Text
+
+instance IsRefPath Text where
+  renderRef = id
+
+mkRefPath :: Text -> Text
+mkRefPath = renderRef
+
 instance IsRefPath NodeRef where
   renderRef = mkRefPath . renderNodeRef
 
 renderNodeRef :: NodeRef -> Text
-renderNodeRef (NodeRef (URI.Authority mUser h mp)) =
+renderNodeRef (URI.Authority mUser h mp) =
     maybe "" ((<> "@") . renderUser) mUser <> URI.unRText h <> maybe "" ((":" <>) . tshow) mp
   where
     renderUser (URI.UserInfo name mPw) = URI.unRText name <> maybe "" ((":" <>) . URI.unRText) mPw
