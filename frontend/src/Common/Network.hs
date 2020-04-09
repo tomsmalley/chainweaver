@@ -27,11 +27,8 @@ class IsRefPath r where
 instance IsRefPath Text where
   renderRef = id
 
-mkRefPath :: Text -> Text
-mkRefPath = renderRef
-
 instance IsRefPath NodeRef where
-  renderRef = mkRefPath . renderNodeRef
+  renderRef = renderRef . renderNodeRef
 
 renderNodeRef :: NodeRef -> Text
 renderNodeRef (URI.Authority mUser h mp) =

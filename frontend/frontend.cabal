@@ -28,7 +28,6 @@ executable frontend
                , dependent-map
                , dependent-sum-aeson-orphans
                , jsaddle
-               , megaparsec
                , modern-uri
                , servant
                , servant-jsaddle
@@ -39,7 +38,6 @@ executable frontend
     Common.Network
 
   ghc-options: -Wall
-     -ddump-minimal-imports -dumpdir /home/lpsmith/ob/chainweaver/min-imports
   default-extensions: ScopedTypeVariables
                     , FlexibleContexts
                     , FlexibleInstances
