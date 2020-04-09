@@ -1,4 +1,4 @@
-This is a branch attempting to isolate a bug with Text on GHCJS
+This is a branch attempting to isolate a bug with Text on GHCJS.  See [ghcjs/ghcjs#748](https://github.com/ghcjs/ghcjs/issues/748).
 
 ```bash
 nix-build -A ghcjs.frontend && open result/bin/frontend.jsexe/index.html
