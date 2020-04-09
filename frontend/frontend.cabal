@@ -41,7 +41,6 @@ executable frontend
 
   other-modules:
     Frontend.Store.V0
-    Common.Route
     Common.Network
     Common.RefPath
 
