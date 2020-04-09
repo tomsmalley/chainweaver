@@ -28,13 +28,8 @@ executable frontend
                , dependent-map
                , dependent-sum-aeson-orphans
                , jsaddle
-               , lens
                , megaparsec
                , modern-uri
-               , mtl
-               , obelisk-frontend
-               , obelisk-route
-               , reflex-dom-core
                , servant
                , servant-jsaddle
                , text
