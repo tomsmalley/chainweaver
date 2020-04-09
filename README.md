@@ -15,7 +15,7 @@ gio open "$@" >& /dev/null
 Then, when the page is loaded in a browser, go to the javascript console.  If you see a cors error message along the lines of
 
 ```
-file:///htpi/v1/localhttps://eu1.testnet.chainweb.com:80/chainweb/0.0/testnet04/chain/8/pact
+hthttps://eu1.testnet.chainweb.com:80/chainweb/0.0/testnet04/chain/8/pact
 ```
 
 then you've reproduced the bug.

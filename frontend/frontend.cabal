@@ -12,9 +12,11 @@ bug-reports:         https://github.com/kadena-io/pact/issues
 -- license:             BSD3
 -- license-file:        LICENSE
 
-library
+executable frontend
+  main-is: Frontend.hs
+  hs-source-dirs: src-bin
   default-language: Haskell2010
-  ghc-options: -O
+  ghc-options: -threaded -O -Wall
   hs-source-dirs: src
 
   build-depends: base
@@ -37,8 +39,8 @@ library
                , servant-jsaddle
                , text
 
-  exposed-modules: Frontend
-                 , Frontend.Store.V0
+  other-modules:
+    Frontend.Store.V0
     Common.Route
     Common.Network
     Common.RefPath
@@ -65,26 +67,5 @@ library
                     , AllowAmbiguousTypes
                     , OverloadedStrings
 
-executable frontend
-  main-is: main.hs
-  hs-source-dirs: src-bin
-  default-language: Haskell2010
-
-  build-depends: base
-               , reflex-dom
-               , obelisk-generated-static
-               , obelisk-frontend
-               , obelisk-route
-               , text
-               , frontend
-
-  --TODO: Make these ghc-options optional
-  ghc-options: -threaded -O -Wall
-  if os(darwin)
-     ghc-options: -dynamic
-  -- Can and _should_ be re-enabled once
-  -- https://github.com/ghcjs/ghcjs/issues/748 is fixed. -dedupe greatly
-  -- reduces closure compile time, reduces final JS size quite a bit and
-  -- improves page load times:
   if impl(ghcjs)
      ghcjs-options: -dedupe
