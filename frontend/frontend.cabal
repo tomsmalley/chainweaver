@@ -14,49 +14,19 @@ bug-reports:         https://github.com/kadena-io/pact/issues
 
 executable frontend
   main-is: Frontend.hs
-  hs-source-dirs: src-bin
   default-language: Haskell2010
-  ghc-options: -threaded -O -Wall
   hs-source-dirs: src
-
-  build-depends: base
-               , aeson
-               , aeson-gadt-th
-               , bytestring
-               , constraints
-               , constraints-extras
-               , dependent-map
-               , dependent-sum-aeson-orphans
-               , jsaddle
-               , modern-uri
-               , servant
-               , servant-jsaddle
-               , text
-
+  build-depends: base, ghcjs-base, ghcjs-prim
   other-modules:
-    Frontend.Store.V0
-    Common.Network
-
+    Frontend.Servant
   ghc-options: -Wall
-  default-extensions: ScopedTypeVariables
-                    , FlexibleContexts
-                    , FlexibleInstances
-                    , FunctionalDependencies
-                    , GADTs
-                    , LambdaCase
-                    , DeriveDataTypeable
-                    , DeriveFoldable
-                    , DeriveFunctor
-                    , DeriveGeneric
-                    , DeriveTraversable
-                    , GeneralizedNewtypeDeriving
-                    , MultiParamTypeClasses
-                    , RankNTypes
-                    , StandaloneDeriving
-                    , TypeFamilies
-                    , TypeApplications
-                    , AllowAmbiguousTypes
-                    , OverloadedStrings
-
+  -- Need at least O1 for the dedupe bug to appear
+    -- 1X1XZ
+    -O1
+    -- 11XZ
+  --  -fno-strictness
+    -- OK
+  --  -fno-do-lambda-eta-expansion
+  --  -fno-full-laziness
   if impl(ghcjs)
      ghcjs-options: -dedupe
