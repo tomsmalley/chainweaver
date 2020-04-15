@@ -11,5 +11,5 @@ main = case joinStrings "X" "Y" "Z" of
 
 -- Removing this function hides the bug.
 -- Changing this function changes the character of the bug.
-renderNodeRef :: (Maybe JSString, JSString, JSString) -> JSString
-renderNodeRef (a, b, c) = maybe "a" ("A" <>) a <> b <> c
+spooky :: (Maybe JSString, JSString, JSString) -> JSString
+spooky (a, b, c) = maybe "a" ("A" <>) a <> b <> c
